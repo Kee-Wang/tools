@@ -1,0 +1,5 @@
+1. If want to created file that can be safly deleted in the future. Try temp as name.
+
+2. Use 7z a 'archive.7z' archive.tar directly because this can guaranteee the highest ratio. 7z can be used without installation. Just need to make a alise so that you can use that exe all the time everywhere.
+
+3. For f90 mods, mod names has to have underscore rather than hypen

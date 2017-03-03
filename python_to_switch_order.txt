@@ -1,0 +1,13 @@
+In [1]: f = open('cw20_test.f90')
+   ...: linelist = list()
+   ...: count = 0
+   ...: for line in f:
+   ...:     count = count + 1
+   ...:     linelist.append(line.strip())
+   ...: nw = int(count/3)
+   ...: print (nw)
+   ...: for i in range(nw):
+   ...:     #print (i)
+   ...:     print (linelist[2*i])
+   ...:     print (linelist[2*i+1])
+   ...:     print (linelist[2*nw + i])
