@@ -1,6 +1,9 @@
 #!/bin/csh
-#Usage: ./exe input
-#Here input is one single molpro file
+#This script will read cw2.xyz files and calc energies
+#with mp2/avtz level one by one with 4 core.
+#This script will call a fortran exe and a molpro program
+#will be called within the exe. 
+
 set base=`pwd`
 
 set suffix=_1
@@ -14,21 +17,21 @@ if ( -w $ibase.out && $?suffix ) then
     mv $ibase.out $ibase.out$suffix
   endif
 endif
-
+set exe='/home/kee/github/tools/v3b/cw2_v3b.molpro'
 set title=$ibase
+#set exe=$1
 set input=$1
 set nodect=1
 if ( $#argv >= 2 ) then
   set nodect = `echo $argv[2]`
 endif
 
-set cpuct=1
+set cpuct=4
 if ( $#argv >= 3 ) then
  set cpuct = `echo $argv[3]`
 endif
 
 cat > pbs.$$ <<EOF
-#!/bin/bash
 ### I want n1x node(s) with n2x cpu(s) each
 #PBS -l nodes=$nodect\:ppn=$cpuct
 ###
@@ -42,34 +45,22 @@ cat > pbs.$$ <<EOF
 #PBS -S /bin/csh
 #PBS -q xeon16
 
-id=\`echo \$PBS_JOBID |cut -d. -f1\`
-log="\$PBS_O_WORKDIR/sub.mm.\${id}"
+setenv TMPDIR /scratch/$user
 
-echo "job id:        " \$PBS_JOBID  >> \$log
-echo "job starts at: " \`date\` >> \$log
-
-#setenv TMPDIR /scratch/$user
-
-#cd $base
+cd $base
 set np=\`cat \$PBS_NODEFILE | wc -l\`
-cat \$PBS_NODEFILE >> \$log
+cat \$PBS_NODEFILE
 
-TMPDIR="/scratch/kee/pbs-\$id"
-mkdir \$TMPDIR
-cd \$TMPDIR
-
-cp $input .
-
-./$input
+setenv JOBID \`echo \$PBS_JOBID\`
+echo \$JOBID
+$exe $input
 #/usr/local/bin/molprop_2010_1_Linux_x86_64_i8 -n \$np  $input
-echo "job ends at:   " \`date\` >> \$log
 #/usr/local/bin/molprop_2008_1 -n \$np  $input
-
 
 EOF
 
 qsub pbs.$$
 
 ## clean-up
-#rm -f pbs.$$
+rm -f pbs.$$
 
