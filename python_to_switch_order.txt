@@ -1,3 +1,5 @@
+
+#This is two switch order for clathrate
 f = open('1_cw20.opt')
 linelist = list()
 count = 0

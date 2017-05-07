@@ -1,10 +1,12 @@
 #!/usr/bin/env python
-file = input('Input filename: ')
+import sys
+#file = input('Input filename: ')
+file = sys.argv[1]
 #file = 'mp.out'
-outfile = file.split('.')[0]
-outfile = outfile + '.xyz'
+filetrim = file.split('.')[0]
+outfile = filetrim + '.xyz'
+errfile = filetrim + '.err'
 f = open(file)
-out = open(outfile,'w')
 natm = 9
 count = 0
 line1 = 30
@@ -20,11 +22,23 @@ for line in f:
             config.append(line)
     if newline[0] == 'V3B':
         e = float(newline[2])
-out.write( """{:<2d}
+try:
+    out = open(outfile,'w')
+    out.write( """{:<2d}
 {:<14.8f}
 """
 .format(natm,e) )
-for line in config:
-    out.write(str(line))
+    for line in config:
+        out.write(str(line))
+    print('File: {} with energy: {:<14.8f}'.format(file,e))
+except:
+    out = open(errfile,'w')
+    out.write( """{:<2d}
+{:<14.8f}
+"""
+.format(natm,0.0) )
+    for line in config:
+        out.write(str(line))
+    print('Wrong E in file: {}'.format(file))
 
 out.close()

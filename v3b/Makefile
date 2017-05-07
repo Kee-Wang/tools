@@ -3,7 +3,9 @@
 
 #=====================User define area===================
 input1=  cw2_v3b.f90 get_cw2_v3b.f90
+input2= cw2_v3b.f90 get_cw20_v3b.f90
 output1= cw2_v3b.molpro
+output2= cw20_v3b.molpro
 #========================================================
 
 FC = ifort -r8
@@ -38,12 +40,15 @@ $(path6)/co2potlongrange.f90\
 $(path6)/pes_co2_huang.o\
 pes_shell.o
 
-OBJECT1 := $(SRC1) $(input1:.f90=.o)
 
+OBJECT1 := $(SRC1) $(input1:.f90=.o)
+OBJECT2 := $(SRC1) $(input2:.f90=.o)
 
 $(output1) : $(OBJECT1)
 	$(FC) $(MODS) -o $@ $^ $(LIB) 
 
+$(output2) : $(OBJECT2)
+	$(FC) $(MODS) -o $@ $^ $(LIB) 
 
 
 %.o : %.f90

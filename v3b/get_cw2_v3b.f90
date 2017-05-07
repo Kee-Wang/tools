@@ -23,7 +23,6 @@ do
      do i=1,9
         read(21,*) symbb,xx(:,i)
      end do
-     xx=xx/auang
      call split_cw2(xx)
 end do
 close(21)

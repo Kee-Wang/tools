@@ -1,0 +1,11 @@
+from pypes.configs import configs
+aa = configs('input.dat')
+aa.extract(v2b=True)
+a = configs('dimer.abE')
+a1 = a.list()
+b = configs('monomerA.abE')
+b1 = b.list()
+c = configs('monomerB.abE')
+c1 = c.list()
+d = a.v2b(a1,b1,c1)
+a.write('v2b.abE',d)
