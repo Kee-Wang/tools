@@ -5,4 +5,4 @@ echo 'Control+C to discontinue the program or enter to proceed scyn'
 read decision
 git add *
 git commit -m 'all added'
-git push
+git push origin master
